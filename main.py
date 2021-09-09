@@ -107,19 +107,19 @@ def set1(data2):
         # client_sock.send(data2.to_bytes(4, byteorder='little'))
         i = 2
 
-        # 값하나 보냄(사용자가 입력한 숫자)
+        # 안드로이드에 숫자값 전송
         client_sock.sendall(data2.to_bytes(4, byteorder='little'))  # int에서 바이트 변환
         # .to_bytes(4, byteorder='little')
 
-        # 안드로이드에서 값 받으면 "하나받았습니다 : 숫자" 보낼 것 받음
+        # 안드로이드에서 보낸 값 수신 받음
         data = client_sock.recv(1024)
         print("" + str(data.decode("utf-8") + ""))
 
-        if data.decode("utf-8") == "c":
+        if data.decode("utf-8") == "c":  # 안드로이드 종료 버튼 누를시 정지
             print("stop    "+data.decode("utf-8"))
             print(os.system('tasklist'))  # 프로세스 목록 출력
-            # os.system('taskkill /f /pid 11172') #pid를 사용한 프로세스 종료
-            os.system('taskkill /f /im object.exe')  # 프로세스명을 사용한 프로세스 종료
+            # os.system('taskkill /f /pid 11172') #pid
+            os.system('taskkill /f /im object.exe')  # 프로세스명으로 object 프로세스 종료
             data2 = 1
             global check
             check = False
@@ -144,7 +144,7 @@ while True:
 
     print('Connected by', addr)
 
-# 서버에서 "안드로이드에서 서버로 연결요청" 한번 받음
+# 서버 "안드로이드에서 서버로 연결요청" 출력
     data = client_sock.recv(1024)
     print(data.decode("utf-8"), len(data))
     if data.decode("utf-8") != "":
@@ -155,9 +155,9 @@ while True:
         t2 = threading.Thread(target=set2, args=(True,))
         t2.start()
 
-    # 연결끊겠다는 표시 보냄
+    
     # i=99
     # client_sock.send(i.to_bytes(4, byteorder='little'))
-
+#연결 종료
 client_sock.close()
 server_sock.close()
